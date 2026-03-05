@@ -60,8 +60,8 @@ const Index = () => {
 
         {/* Below-fold content — lazy loaded */}
         <Suspense fallback={<SectionFallback />}>
-          <SkillsRow />
           <About />
+          <SkillsRow />
           <Timeline />
           <Experience />
           <ProjectsPlaceholder />

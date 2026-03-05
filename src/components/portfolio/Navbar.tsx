@@ -13,18 +13,28 @@ const Navbar = memo(() => {
       setScrolled(window.scrollY > 50);
 
       // Track active section
-      const sections = navItems.map((item) => item.toLowerCase());
-      for (const id of sections.reverse()) {
-        const el = document.getElementById(id);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 150) {
-            setActiveSection(id);
-            break;
+      const sections = [...navItems].map((item) => item.toLowerCase());
+      let currentId = '';
+
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
+        currentId = 'contact';
+      } else {
+        for (const id of sections) {
+          const el = document.getElementById(id);
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            // Consider section "active" when it passes through the middle of the viewport
+            if (rect.top <= window.innerHeight / 2) {
+              currentId = id;
+            }
           }
         }
       }
+      setActiveSection(currentId);
     };
+
+    // Initialize on mount
+    handleScroll();
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
